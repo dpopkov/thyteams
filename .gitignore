@@ -36,3 +36,7 @@ build/
 mvnw
 mvnw.cmd
 .mvn/
+
+### NPM
+/node_modules/
+/node/
