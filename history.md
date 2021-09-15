@@ -4,6 +4,7 @@ History and short Reference
 * [Ch03 - Thymeleaf intro](#ch03---thymeleaf-intro)
 * [Ch04 - Tailwind CSS](#ch04---tailwind-css)
 * [Ch05 - Fragments](#ch05---fragments)
+* [Ch06 - Layouts](#ch06---layouts)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -118,3 +119,8 @@ can be used like this:
 * Create templates/svg directory and put SVG files in it
 * Add resolver for SVG files
 * Set `spring.thymeleaf.template-resolver-order=0`
+
+### Ch06 - Layouts
+* Add dependency for `thymeleaf-layout-dialect`
+* Add `templates/layout/layout.html`
+* Refactor `index.html`
