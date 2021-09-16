@@ -6,6 +6,7 @@ History and short Reference
 * [Ch05 - Fragments](#ch05---fragments)
 * [Ch06 - Layouts](#ch06---layouts)
 * [Ch07 - Controllers](#ch07---controllers)
+* [Ch08 - Internationalization](#ch08---internationalization)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -131,3 +132,11 @@ can be used like this:
 * Add views teams/list, users/list
 * Add svg files and adjust the sidebar menu
 * Add RootController which redirects to /users
+
+### Ch08 - Internationalization
+* Set application property `spring.messages.basename=i18n/messages`
+* Add properties files containing translated messages
+* Refer to the translated text by using the key with the __#{...}__ syntax in the __th:text__ attribute
+* Add WebMvcConfigurer with a LocaleChangeInterceptor
+* Open `http://localhost:8080/users?lang=nl` in the browser to view the Dutch translation
+* Remove the cookie or add `/?lang=en` to the URL to go back to the English translations
