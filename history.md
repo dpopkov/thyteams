@@ -5,6 +5,7 @@ History and short Reference
 * [Ch04 - Tailwind CSS](#ch04---tailwind-css)
 * [Ch05 - Fragments](#ch05---fragments)
 * [Ch06 - Layouts](#ch06---layouts)
+* [Ch07 - Controllers](#ch07---controllers)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -124,3 +125,9 @@ can be used like this:
 * Add dependency for `thymeleaf-layout-dialect`
 * Add `templates/layout/layout.html`
 * Refactor `index.html`
+
+### Ch07 - Controllers
+* Add UserController, TeamController
+* Add views teams/list, users/list
+* Add svg files and adjust the sidebar menu
+* Add RootController which redirects to /users
