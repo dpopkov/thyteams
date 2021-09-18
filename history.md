@@ -140,3 +140,27 @@ can be used like this:
 * Add WebMvcConfigurer with a LocaleChangeInterceptor
 * Open `http://localhost:8080/users?lang=nl` in the browser to view the Dutch translation
 * Remove the cookie or add `/?lang=en` to the URL to go back to the English translations
+
+### Ch09 - Database connection
+* Add Spring Data JPA to the project
+* Add "JPA Early Primary Key Library" to
+    * implement early primary key generation before storing the object to the database
+        * objects have primary keys since the moment of construction
+        * it makes implementing equals() and hashCode() simpler
+    * use dedicated primary key classes
+* Add `<pluginGroup>io.github.wimdeblauwe</pluginGroup>` to ~/.m2/settings.xml
+* Generate the basic structure of an entity and JPA Repository:
+```
+mvn jpearl:generate -Dentity=User
+# It will generate User, UserId, UserRepository, UserRepositoryCustom, UserRepositoryImpl, UserRepositoryTest.
+```
+* Expose UniqueIdGenerator bean in ThymeleafApplicationConfiguration
+* Use Flyway to create table
+    * Add dependency for `<artifactId>flyway-core</artifactId>`
+    * Add migration script
+    * Tell Hibernate to use the specific table name (using @Table annotation)
+* Specify the database to run Integration Tests against
+    * Add dependencies for `testcontainers`
+    * Add dependency for PostgreSQL driver
+    * Configure UserRepositoryTest for PostgreSQL db started via Testcontainers
+    * Set properties for test in an application-data-jpa-test.properties file

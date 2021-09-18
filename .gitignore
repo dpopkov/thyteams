@@ -40,3 +40,6 @@ mvnw.cmd
 ### NPM
 /node_modules/
 /node/
+
+### Environment for postgres
+.env
