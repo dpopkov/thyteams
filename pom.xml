@@ -20,6 +20,7 @@
         <frontend-maven-plugin.npmVersion>6.14.11</frontend-maven-plugin.npmVersion>
         <jpearl.version>1.0.0</jpearl.version>
         <testcontainers.version>1.16.0</testcontainers.version>
+        <guava.version>30.0-jre</guava.version>
     </properties>
     <dependencies>
         <dependency>
@@ -56,6 +57,11 @@
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>
