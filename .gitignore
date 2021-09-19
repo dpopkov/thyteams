@@ -41,5 +41,7 @@ mvnw.cmd
 /node_modules/
 /node/
 
-### Environment for postgres
+### Environment for postgres (.env.example should be committed)
 .env
+### Properties for local profile (application-local.properties.example should be committed)
+src/main/resources/application-local.properties

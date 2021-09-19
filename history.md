@@ -8,6 +8,7 @@ History and short Reference
 * [Ch07 - Controllers](#ch07---controllers)
 * [Ch08 - Internationalization](#ch08---internationalization)
 * [Ch09 - Database connection](#ch09---database-connection)
+* [Ch10 - Displaying data](#ch10---displaying-data)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -165,3 +166,10 @@ mvn jpearl:generate -Dentity=User
     * Add dependency for PostgreSQL driver
     * Configure UserRepositoryTest for PostgreSQL db started via Testcontainers
     * Set properties for test in an application-data-jpa-test.properties file
+
+### Ch10 - Displaying data
+* Add DatabaseInitializer to generate random users
+* Add UserService and UserServiceImpl
+* Create `application-local.properties` for Postgres db running in Docker
+* Start database in docker using: `docker-compose up -d`
+* Run the application with the local, init-db (for the 1st time only) profiles

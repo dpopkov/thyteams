@@ -21,6 +21,7 @@
         <jpearl.version>1.0.0</jpearl.version>
         <testcontainers.version>1.16.0</testcontainers.version>
         <guava.version>30.0-jre</guava.version>
+        <javafaker.version>1.0.2</javafaker.version>
     </properties>
     <dependencies>
         <dependency>
@@ -86,6 +87,11 @@
             <artifactId>postgresql</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${javafaker.version}</version>
         </dependency>
     </dependencies>
 
