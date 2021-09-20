@@ -1,5 +1,7 @@
 package learn.thyme.thyteams.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,5 +24,10 @@ public class UserServiceImpl implements UserService {
                 parameters.getEmail(),
                 parameters.getPhoneNumber());
         return repository.save(user);
+    }
+
+    @Override
+    public Page<User> getUsers(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }

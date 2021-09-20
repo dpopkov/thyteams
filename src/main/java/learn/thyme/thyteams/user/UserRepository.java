@@ -1,8 +1,8 @@
 package learn.thyme.thyteams.user;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface UserRepository extends CrudRepository<User, UserId>, UserRepositoryCustom {
+public interface UserRepository extends PagingAndSortingRepository<User, UserId>, UserRepositoryCustom {
 }

@@ -173,3 +173,7 @@ mvn jpearl:generate -Dentity=User
 * Create `application-local.properties` for Postgres db running in Docker
 * Start database in docker using: `docker-compose up -d`
 * Run the application with the local, init-db (for the 1st time only) profiles
+* Display list of users on the html page
+* Add Pagination
+    * Replace CrudRepository with PagingAndSortingRepository
+    * Add Thymeleaf fragment 'controls' for pagination
