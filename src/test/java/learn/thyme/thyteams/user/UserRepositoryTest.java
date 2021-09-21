@@ -82,6 +82,23 @@ class UserRepositoryTest {
         assertThat(repository.findAll(PageRequest.of(2, 5, sort))).isEmpty();
     }
 
+    @Test
+    void testExistsByEmail() {
+        UserId id = repository.nextId();
+        User user = new User(id,
+                new UserName("Tommy", "Walton"),
+                Gender.MALE,
+                LocalDate.of(2001, Month.FEBRUARY, 17),
+                new Email("tommy.walton@gmail.com"),
+                new PhoneNumber("202 555 0192"));
+        repository.save(user);
+
+        entityManager.flush();
+
+        assertThat(repository.existsByEmail(new Email("tommy.walton@gmail.com"))).isTrue();
+        assertThat(repository.existsByEmail(new Email("nobody@gmail.com"))).isFalse();
+    }
+
     private void saveUsers(int numberOfUsers) {
         for (int i = 0; i < numberOfUsers; i++) {
             repository.save(new User(repository.nextId(),

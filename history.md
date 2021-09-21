@@ -9,6 +9,7 @@ History and short Reference
 * [Ch08 - Internationalization](#ch08---internationalization)
 * [Ch09 - Database connection](#ch09---database-connection)
 * [Ch10 - Displaying data](#ch10---displaying-data)
+* [Ch11 - Forms](#ch11---forms)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -177,3 +178,9 @@ mvn jpearl:generate -Dentity=User
 * Add Pagination
     * Replace CrudRepository with PagingAndSortingRepository
     * Add Thymeleaf fragment 'controls' for pagination
+
+### Ch11 - Forms
+* Add CreateUserFormData value class and implement createUserForm and doCreateUser methods in controller
+* Create NotExistingUser annotation and NotExistingUserValidator
+* Add LocalValidatorFactoryBean to app configuration
+* Use validation groups to influence the processing order of the validations
