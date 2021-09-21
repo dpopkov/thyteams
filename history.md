@@ -10,6 +10,7 @@ History and short Reference
 * [Ch09 - Database connection](#ch09---database-connection)
 * [Ch10 - Displaying data](#ch10---displaying-data)
 * [Ch11 - Forms](#ch11---forms)
+* [Ch12 - Data editing](#ch12---data-editing)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -184,3 +185,6 @@ mvn jpearl:generate -Dentity=User
 * Create NotExistingUser annotation and NotExistingUserValidator
 * Add LocalValidatorFactoryBean to app configuration
 * Use validation groups to influence the processing order of the validations
+
+### Ch12 - Data editing
+* Create "Add user" button
