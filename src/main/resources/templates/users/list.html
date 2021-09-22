@@ -29,11 +29,11 @@
                             </thead>
                             <tbody>
                             <tr class="bg-white" th:each="user : ${users}">
-                                <td th:replace="fragments/table :: data(contents=${user.userName.fullName},primary=true)"></td> <!--.-->
+                                <td th:replace="fragments/table :: data(contents=${user.userName.fullName},primary=true)"></td>
                                 <td th:replace="fragments/table :: data(contents=${user.gender},hideOnMobile=true)"></td>
                                 <td th:replace="fragments/table :: data(contents=${user.birthday},hideOnMobile=true)"></td>
                                 <td th:replace="fragments/table :: data(contents=${user.email.asString()},hideOnMobile=true)"></td>
-                                <td th:replace="fragments/table :: dataWithLink('Edit', '#')"></td> <!--.-->
+                                <td th:replace="fragments/table :: dataWithLink('Edit', @{'/users/'+ ${user.id.asString()}})"></td> <!-- edit URL -->
                             </tr>
                             </tbody>
                         </table>

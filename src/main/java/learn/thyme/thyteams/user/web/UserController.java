@@ -1,18 +1,14 @@
 package learn.thyme.thyteams.user.web;
 
-import learn.thyme.thyteams.infrastructure.validation.ValidationGroupSequence;
-import learn.thyme.thyteams.user.Gender;
-import learn.thyme.thyteams.user.UserService;
+import learn.thyme.thyteams.infrastructure.web.EditMode;
+import learn.thyme.thyteams.user.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,19 +33,48 @@ public class UserController {
     @GetMapping("/create")
     public String createUserForm(Model model) {
         model.addAttribute("user", new CreateUserFormData());
-        model.addAttribute("genders", List.of(Gender.MALE, Gender.FEMALE, Gender.OTHER));
+        addGendersTo(model);
         return "users/edit";
     }
 
     @PostMapping("/create")
-    public String doCreateUser(@Validated(ValidationGroupSequence.class)
+    public String doCreateUser(@Validated(CreateUserValidationGroupSequence.class)
                                    @ModelAttribute("user") CreateUserFormData formData,
                                BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("genders", List.of(Gender.MALE, Gender.FEMALE, Gender.OTHER));
+            addGendersTo(model);
             return "users/edit";
         }
         service.createUser(formData.toParameters());
         return "redirect:/users";
+    }
+
+    @GetMapping("/{id}")
+    public String editUserForm(@PathVariable("id") UserId userId, Model model) {
+        User user = service.getUser(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        model.addAttribute("user", EditUserFormData.fromUser(user));
+        addGendersTo(model);
+        model.addAttribute("editMode", EditMode.UPDATE);
+        return "users/edit";
+    }
+
+    @PostMapping("/{id}")
+    public String doEditUser(@PathVariable("id") UserId userId,
+                             @Validated(EditUserValidationGroupSequence.class)
+                                @ModelAttribute("user") EditUserFormData formData,
+                             BindingResult bindingResult,
+                             Model model) {
+        if (bindingResult.hasErrors()) {
+            addGendersTo(model);
+            model.addAttribute("editMode", EditMode.UPDATE);
+            return "users/edit";
+        }
+        service.editUser(userId, formData.toParameters());
+        return "redirect:/users";
+    }
+
+    private void addGendersTo(Model model) {
+        model.addAttribute("genders", List.of(Gender.MALE, Gender.FEMALE, Gender.OTHER));
     }
 }

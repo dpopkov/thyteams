@@ -188,3 +188,17 @@ mvn jpearl:generate -Dentity=User
 
 ### Ch12 - Data editing
 * Create "Add user" button
+* Update SQL script to have a new "version" field, which will allow using Optimistic Locking
+* Drop and re-create schema in db
+* Replace AbstractEntity with AbstractVersionedEntity in entity User
+* Add methods getUser and editUser to UserService
+* Add EditUserFormData class
+* Add method editUserForm to UserController
+* Create StringToUserIdConverter
+* Make the Edit links in the list of users point to the proper URL
+* Update edit.html to the take the editMode and version into account
+* Implementing the actual save operation via a POST call in the controller
+* Split ValidationGroupSequence to two sequences for create and edit operations
+* Create `textinput` fragment for form
+* Create an @ControllerAdvice annotated GlobalControllerAdvice class that will handle the Optimistic Locking failure exception
+* Add html views for errors
