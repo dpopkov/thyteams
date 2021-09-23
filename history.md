@@ -11,6 +11,7 @@ History and short Reference
 * [Ch10 - Displaying data](#ch10---displaying-data)
 * [Ch11 - Forms](#ch11---forms)
 * [Ch12 - Data editing](#ch12---data-editing)
+* [Ch13 - Deletion of an entity](#ch13---deletion-of-an-entity)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -202,3 +203,9 @@ mvn jpearl:generate -Dentity=User
 * Create `textinput` fragment for form
 * Create an @ControllerAdvice annotated GlobalControllerAdvice class that will handle the Optimistic Locking failure exception
 * Add html views for errors
+
+### Ch13 - Deletion of an entity
+* Delete using a dedicated URL
+    * Add method deleteUser to UserService
+    * Add a new POST mapping to UserController
+    * Add flash attributes to show a confirmation message after the redirect to the list of users

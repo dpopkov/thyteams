@@ -15,4 +15,6 @@ public interface UserService {
     Page<User> getUsers(Pageable pageable);
 
     boolean userWithEmailExists(Email email);
+
+    void deleteUser(UserId userId);
 }
