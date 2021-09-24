@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html
         xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/layout}"
         th:with="activeMenuItem='users'">
@@ -10,7 +11,8 @@
 <body>
 <div layout:fragment="page-content">
 
-    <div th:replace="fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/create})"></div>
+    <div th:replace="fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/create})"
+         sec:authorize="hasRole('ADMIN')"></div>
 
     <div th:if="${deletedUserName}"> <!--.-->
         <div th:replace="fragments/alerts :: success(#{user.delete.success(${deletedUserName})})"></div> <!--.-->
@@ -23,35 +25,44 @@
                     <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
                         <table class="min-w-full">
                             <thead>
+
                             <tr>
                                 <th th:replace="fragments/table :: header(#{user.name})"></th>
                                 <th th:replace="fragments/table :: header(title=#{user.gender},hideOnMobile=true)"></th>
                                 <th th:replace="fragments/table :: header(title=#{user.birthday},hideOnMobile=true)"></th>
                                 <th th:replace="fragments/table :: header(title=#{user.email},hideOnMobile=true)"></th>
-                                <th th:replace="fragments/table :: header('')"></th>
-                                <th th:replace="fragments/table :: header('')"></th>
+                                <th:block sec:authorize="hasRole('ADMIN')"> <!--.-->
+                                    <th th:replace="fragments/table :: header('')"></th>
+                                    <th th:replace="fragments/table :: header('')"></th>
+                                </th:block>
                             </tr>
+
                             </thead>
                             <tbody>
+
                             <tr class="bg-white" th:each="user : ${users}">
                                 <td th:replace="fragments/table :: data(contents=${user.userName.fullName},primary=true)"></td>
                                 <td th:replace="fragments/table :: data(contents=${user.gender},hideOnMobile=true)"></td>
                                 <td th:replace="fragments/table :: data(contents=${user.birthday},hideOnMobile=true)"></td>
                                 <td th:replace="fragments/table :: data(contents=${user.email.asString()},hideOnMobile=true)"></td>
-                                <td th:replace="fragments/table :: dataWithLink('Edit', @{'/users/'+ ${user.id.asString()}})"></td> <!-- edit URL -->
-                                <!--
-                                    Cell for 'Delete'
-                                -->
-                                <td th:x-data="|{name: '${user.userName.fullName}', deleteUrl: '/users/${user.id.asString()}/delete'}|"
-                                    class="px-6 py-4 whitespace-no-wrap text-right text-sm font-medium">
-                                    <a href="javascript:void(0)"
-                                       class="text-green-600 hover:text-green-900"
-                                       @click="$dispatch('open-delete-modal', {name, deleteUrl})">Delete</a>
-                                </td>
+
+                                <th:block sec:authorize="hasRole('ADMIN')"> <!--.-->
+                                    <td th:replace="fragments/table :: dataWithLink('Edit', @{'/users/'+ ${user.id.asString()}})"></td>
+                                    <td th:x-data="|{name: '${user.userName.fullName}', deleteUrl: '/users/${user.id.asString()}/delete'}|"
+                                        class="px-6 py-4 whitespace-no-wrap text-right text-sm font-medium">
+                                        <a href="javascript:void(0)"
+                                           class="text-green-600 hover:text-green-900"
+                                           @click="$dispatch('open-delete-modal', {name, deleteUrl})">Delete</a>
+                                    </td>
+                                </th:block>
+
                             </tr>
+
                             </tbody>
                         </table>
-                        <div th:replace="fragments/pagination :: controls(page=${users})"></div>
+                        <th:block th:if="${users.content.size() > 0}">
+                            <div th:replace="fragments/pagination :: controls(page=${users})"></div>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -59,9 +70,6 @@
     </div>
 </div>
 
-<!--
-    Modal code
--->
 <div layout:fragment="modals-content" x-data="modalDeleteConfirmation()"> <!--.-->
     <th:block th:if="${users.content.size() > 0}">
         <div x-show="isVisible()"
@@ -99,7 +107,7 @@
                      x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"> <!--.-->
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <!-- Heroicon name: outline/exclamation -->
+
                             <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
@@ -119,11 +127,9 @@
                     </div>
                     <form id="deleteForm" enctype="multipart/form-data" method="post"
                           x-bind:action="getDeleteUrl()"> <!--.-->
-                        <!--
-                                                <input type="hidden"
-                                                       th:name="${_csrf.parameterName}"
-                                                       th:value="${_csrf.token}"/>
-                        -->
+                        <input type="hidden"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}"/>
                         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
         <span class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto">
           <button type="submit"
@@ -165,7 +171,7 @@
                 getDeleteUrl() {
                     return this.deleteUrl;
                 },
-                showModal($event) {
+                showModal($event) { //<.>
                     this.name = $event.detail.name;
                     this.deleteUrl = $event.detail.deleteUrl;
                     this.show = true;
@@ -174,7 +180,7 @@
         }
     </script>
 
-    <script th:replace="fragments/alerts :: success-js"></script>
+    <script th:replace="fragments/alerts :: alert-js"></script>
 
 </th:block>
 

@@ -4,6 +4,7 @@ import learn.thyme.thyteams.infrastructure.web.EditMode;
 import learn.thyme.thyteams.user.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/create")
+    @Secured("ROLE_ADMIN")
     public String createUserForm(Model model) {
         model.addAttribute("user", new CreateUserFormData());
         addGendersTo(model);
@@ -39,6 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
+    @Secured("ROLE_ADMIN")
     public String doCreateUser(@Validated(CreateUserValidationGroupSequence.class)
                                    @ModelAttribute("user") CreateUserFormData formData,
                                BindingResult bindingResult, Model model) {
@@ -61,6 +64,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public String doEditUser(@PathVariable("id") UserId userId,
                              @Validated(EditUserValidationGroupSequence.class)
                                 @ModelAttribute("user") EditUserFormData formData,
@@ -80,6 +84,7 @@ public class UserController {
     }
 
     @PostMapping("/{id}/delete")
+    @Secured("ROLE_ADMIN")
     public String doDeleteUser(@PathVariable("id") UserId userId,
                                RedirectAttributes redirectAttributes) {
         User user = service.getUser(userId)

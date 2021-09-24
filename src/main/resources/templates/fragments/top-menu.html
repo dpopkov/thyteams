@@ -1,4 +1,6 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="menu" class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
     <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
             @click.stop="openSidebar">
@@ -40,11 +42,21 @@
                      x-transition:leave-start="opacity-100 scale-100"
                      x-transition:leave-end="opacity-0 scale-95"
                 >
+                    <div class="block px-4 py-2 text-sm text-gray-700 font-mono border-b"
+                         sec:authentication="name"></div>
+                    <div class="block px-4 py-2 text-sm text-gray-700 font-mono border-b"
+                         sec:authentication="principal.authorities"></div>
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
 
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
 
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                    <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" th:text="#{menu.signout}">
+                                Sign out
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

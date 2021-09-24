@@ -12,6 +12,7 @@ History and short Reference
 * [Ch11 - Forms](#ch11---forms)
 * [Ch12 - Data editing](#ch12---data-editing)
 * [Ch13 - Deletion of an entity](#ch13---deletion-of-an-entity)
+* [Ch14 - Security](#ch14---security)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -209,3 +210,19 @@ mvn jpearl:generate -Dentity=User
     * Add method deleteUser to UserService
     * Add a new POST mapping to UserController
     * Add flash attributes to show a confirmation message after the redirect to the list of users
+
+### Ch14 - Security
+* Add dependency for `spring-boot-starter-security`
+* Add WebSecurityConfiguration extends WebSecurityConfigurerAdapter
+* Add PasswordEncoder bean to application config
+* Add @EnableGlobalMethodSecurity to security config to enabe the use of specific annotations on the controller methods
+* Use @Secured on controller methods
+* Use Thymeleaf Spring Security integration:
+    * dependency for `thymeleaf-extras-springsecurity5`
+    * edit templates to take the current user role into account
+    * show current logged on user information on top of the page
+* Create custom logon page
+    * Add login template
+    * Add LoginController
+    * Update WebSecurityConfiguration to use custom /login page
+* Make sign out in top menu work
