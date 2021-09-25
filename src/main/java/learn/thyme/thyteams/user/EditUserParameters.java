@@ -6,7 +6,7 @@ public class EditUserParameters extends CreateUserParameters {
     private final long version;
 
     public EditUserParameters(long version, UserName userName, Gender gender, LocalDate birthday, Email email, PhoneNumber phoneNumber) {
-        super(userName, gender, birthday, email, phoneNumber);
+        super(userName, null, gender, birthday, email, phoneNumber);
         this.version = version;
     }
 

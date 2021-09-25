@@ -226,3 +226,13 @@ mvn jpearl:generate -Dentity=User
     * Add LoginController
     * Update WebSecurityConfiguration to use custom /login page
 * Make sign out in top menu work
+* Users from database
+    * enum UserRole
+    * update User entity by adding roles and password fields, factory methods
+    * change the Flyway migration script and clear the db
+    * update UserService, CreateUserParameters, DatabaseInitializer
+    * connect User entity with Security - create DatabaseUserDetailsService, ApplicationUserDetails
+    * update WebSecurityConfiguration
+    * run 1st time with init-db profile
+    * show current user info in Profile dropdown panel
+    * update Edit view, UserController

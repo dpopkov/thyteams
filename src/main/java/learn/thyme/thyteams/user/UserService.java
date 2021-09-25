@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface UserService {
     User createUser(CreateUserParameters parameters);
 
+    User createAdministrator(CreateUserParameters parameters);
+
     Optional<User> getUser(UserId userId);
 
     User editUser(UserId userId, EditUserParameters parameters);

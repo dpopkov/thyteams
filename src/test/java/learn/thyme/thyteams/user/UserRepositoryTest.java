@@ -25,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("data-jpa-test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserRepositoryTest {
+    private static final String ENCODED_PWD = "encoded-secret-password";
     private final UserRepository repository;
     private final JdbcTemplate jdbcTemplate;
     @PersistenceContext
@@ -45,8 +46,9 @@ class UserRepositoryTest {
     @Test
     void testSaveUser() {
         UserId id = repository.nextId();
-        repository.save(new User(id,
+        repository.save(User.createUser(id,
                 new UserName("Jack", "Sparrow"),
+                ENCODED_PWD,
                 Gender.MALE,
                 LocalDate.of(1999, Month.APRIL, 17),
                 new Email("jack@mail.org"),
@@ -58,6 +60,7 @@ class UserRepositoryTest {
         assertThat(idInDb).isEqualTo(id.getId());
         assertThat(jdbcTemplate.queryForObject("SELECT first_name FROM tt_user", String.class)).isEqualTo("Jack");
         assertThat(jdbcTemplate.queryForObject("SELECT  last_name FROM tt_user", String.class)).isEqualTo("Sparrow");
+        assertThat(jdbcTemplate.queryForObject("SELECT  password FROM tt_user", String.class)).isEqualTo(ENCODED_PWD);
         assertThat(jdbcTemplate.queryForObject("SELECT gender FROM tt_user", Gender.class)).isEqualTo(Gender.MALE);
         assertThat(jdbcTemplate.queryForObject("SELECT birthday FROM tt_user", LocalDate.class)).isEqualTo("1999-04-17");
         assertThat(jdbcTemplate.queryForObject("SELECT email FROM tt_user", String.class)).isEqualTo("jack@mail.org");
@@ -85,8 +88,9 @@ class UserRepositoryTest {
     @Test
     void testExistsByEmail() {
         UserId id = repository.nextId();
-        User user = new User(id,
+        User user = User.createUser(id,
                 new UserName("Tommy", "Walton"),
+                ENCODED_PWD,
                 Gender.MALE,
                 LocalDate.of(2001, Month.FEBRUARY, 17),
                 new Email("tommy.walton@gmail.com"),
@@ -101,8 +105,9 @@ class UserRepositoryTest {
 
     private void saveUsers(int numberOfUsers) {
         for (int i = 0; i < numberOfUsers; i++) {
-            repository.save(new User(repository.nextId(),
+            repository.save(User.createUser(repository.nextId(),
                     new UserName(String.format("Tommy%d", i), i % 2 == 0 ? "Walton" : "Holt"),
+                    ENCODED_PWD,
                     Gender.MALE,
                     LocalDate.of(2001, Month.FEBRUARY, 17),
                     new Email("tommy.walton" + i + "@gmail.com"),

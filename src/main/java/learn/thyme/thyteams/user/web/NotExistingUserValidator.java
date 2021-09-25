@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class NotExistingUserValidator implements ConstraintValidator<NotExistingUser, CreateUserFormData> {
+public class NotExistingUserValidator implements ConstraintValidator<NotExistingUser, AbstractUserFormData> {
     private final UserService userService;
 
     public NotExistingUserValidator(UserService userService) {
@@ -20,7 +20,7 @@ public class NotExistingUserValidator implements ConstraintValidator<NotExisting
     }
 
     @Override
-    public boolean isValid(CreateUserFormData formData, ConstraintValidatorContext context) {
+    public boolean isValid(AbstractUserFormData formData, ConstraintValidatorContext context) {
         if (!StringUtils.isEmpty(formData.getEmail())
                 && userService.userWithEmailExists(new Email(formData.getEmail()))) {
             context.disableDefaultConstraintViolation();

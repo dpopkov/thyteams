@@ -2,7 +2,7 @@ package learn.thyme.thyteams.user.web;
 
 import learn.thyme.thyteams.user.*;
 
-public class EditUserFormData extends CreateUserFormData {
+public class EditUserFormData  extends AbstractUserFormData {
     private String id;  // references user id
     private long version;
 

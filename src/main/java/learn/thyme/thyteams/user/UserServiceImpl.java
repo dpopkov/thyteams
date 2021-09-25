@@ -1,27 +1,50 @@
 package learn.thyme.thyteams.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User createUser(CreateUserParameters parameters) {
+        log.debug("Creating user {} ({})", parameters.getUserName().getFullName(),
+                parameters.getEmail().asString());
         UserId userId = repository.nextId();
-        User user = new User(userId,
+        User user = User.createUser(userId,
                 parameters.getUserName(),
+                passwordEncoder.encode(parameters.getPassword()),
+                parameters.getGender(),
+                parameters.getBirthday(),
+                parameters.getEmail(),
+                parameters.getPhoneNumber());
+        return repository.save(user);
+    }
+
+    @Override
+    public User createAdministrator(CreateUserParameters parameters) {
+        log.debug("Creating administrator {} ({})", parameters.getUserName().getFullName(),
+                parameters.getEmail().asString());
+        UserId userId = repository.nextId();
+        User user = User.createAdministrator(userId,
+                parameters.getUserName(),
+                passwordEncoder.encode(parameters.getPassword()),
                 parameters.getGender(),
                 parameters.getBirthday(),
                 parameters.getEmail(),

@@ -43,9 +43,9 @@
                      x-transition:leave-end="opacity-0 scale-95"
                 >
                     <div class="block px-4 py-2 text-sm text-gray-700 font-mono border-b"
-                         sec:authentication="name"></div>
+                         sec:authentication="principal.displayName"></div>
                     <div class="block px-4 py-2 text-sm text-gray-700 font-mono border-b"
-                         sec:authentication="principal.authorities"></div>
+                         sec:authentication="principal.username"></div>
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
 
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>

@@ -37,6 +37,8 @@ public class UserController {
     public String createUserForm(Model model) {
         model.addAttribute("user", new CreateUserFormData());
         addGendersTo(model);
+        addUserRolesTo(model);
+        model.addAttribute("editMode", EditMode.CREATE);
         return "users/edit";
     }
 
@@ -47,6 +49,8 @@ public class UserController {
                                BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             addGendersTo(model);
+            addUserRolesTo(model);
+            model.addAttribute("editMode", EditMode.CREATE);
             return "users/edit";
         }
         service.createUser(formData.toParameters());
@@ -59,6 +63,7 @@ public class UserController {
                 .orElseThrow(() -> new UserNotFoundException(userId));
         model.addAttribute("user", EditUserFormData.fromUser(user));
         addGendersTo(model);
+        addUserRolesTo(model);
         model.addAttribute("editMode", EditMode.UPDATE);
         return "users/edit";
     }
@@ -72,6 +77,7 @@ public class UserController {
                              Model model) {
         if (bindingResult.hasErrors()) {
             addGendersTo(model);
+            addUserRolesTo(model);
             model.addAttribute("editMode", EditMode.UPDATE);
             return "users/edit";
         }
@@ -81,6 +87,10 @@ public class UserController {
 
     private void addGendersTo(Model model) {
         model.addAttribute("genders", List.of(Gender.MALE, Gender.FEMALE, Gender.OTHER));
+    }
+
+    private void addUserRolesTo(Model model) {
+        model.addAttribute("possibleRoles", List.of(UserRole.values()));
     }
 
     @PostMapping("/{id}/delete")
