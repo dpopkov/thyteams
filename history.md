@@ -13,6 +13,7 @@ History and short Reference
 * [Ch12 - Data editing](#ch12---data-editing)
 * [Ch13 - Deletion of an entity](#ch13---deletion-of-an-entity)
 * [Ch14 - Security](#ch14---security)
+* [Ch15 - Testing](#ch15---testing)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -236,3 +237,9 @@ mvn jpearl:generate -Dentity=User
     * run 1st time with init-db profile
     * show current user info in Profile dropdown panel
     * update Edit view, UserController
+
+### Ch15 - Testing
+* Using @WebMvcTest
+    * UserControllerTest
+        * test redirecting non-authenticated user to /login
+        * test a user with the appropriate authorization can access the application
