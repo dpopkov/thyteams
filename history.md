@@ -243,3 +243,4 @@ mvn jpearl:generate -Dentity=User
     * UserControllerTest
         * test redirecting non-authenticated user to /login
         * test a user with the appropriate authorization can access the application
+* Using HtmlUnit
