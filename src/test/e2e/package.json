@@ -1,0 +1,6 @@
+{
+  "name": "thyteams-tests",
+  "devDependencies": {
+    "cypress": "^8.5.0"
+  }
+}

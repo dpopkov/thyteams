@@ -28,8 +28,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        final String integrationTestAntPattern = "/api/integration-test/**";
+        // Disable CSRF on the integration-test endpoints
+        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringAntMatchers(integrationTestAntPattern));
         http.authorizeRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .antMatchers(integrationTestAntPattern).permitAll() // allow everybody to integration-test
                     .antMatchers("/img/*").permitAll()
                     .anyRequest().authenticated()
                 .and()

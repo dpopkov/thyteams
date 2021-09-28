@@ -19,4 +19,6 @@ public interface UserService {
     boolean userWithEmailExists(Email email);
 
     void deleteUser(UserId userId);
+
+    void deleteAllUsers();
 }

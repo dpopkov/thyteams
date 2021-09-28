@@ -244,3 +244,17 @@ mvn jpearl:generate -Dentity=User
         * test redirecting non-authenticated user to /login
         * test a user with the appropriate authorization can access the application
 * Using HtmlUnit
+* Using Cypress
+    * Install Cypress
+        * Create src/test/e2e folder
+        * Create package.json
+        * Open a terminal at src/test/e2e and run: `npm install cypress --save-dev`
+        * Run `npx cypress open`. It will start the browser and run the generated example tests.
+    * Prepare for Cypress tests
+        * Create a @RestController IntegrationTestController so we can call the endpoints from the Cypress tests.
+        * These endpoints should only be started when running as a test. 
+        * It is very important that this is not exposed when running on production as it wipes the complete database.
+        * Update WebSecurityConfiguration to allow everybody to access `/api/integration-test`
+        * Create `auth.spec.js` test, update `cypress.json` to set the base url.
+        * Run the application with profiles `local` and `integration-test`.
+        * Run `npx cypress open`. Click on `auth.spec.js` in Cypress desktop application.
