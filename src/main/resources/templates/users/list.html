@@ -11,7 +11,7 @@
 <body>
 <div layout:fragment="page-content">
 
-    <div th:replace="fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/create})"
+    <div th:replace="fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/create}, 'add-user-button')"
          sec:authorize="hasRole('ADMIN')"></div>
 
     <div th:if="${deletedUserName}"> <!--.-->

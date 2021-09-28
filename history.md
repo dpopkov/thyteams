@@ -258,3 +258,4 @@ mvn jpearl:generate -Dentity=User
         * Create `auth.spec.js` test, update `cypress.json` to set the base url.
         * Run the application with profiles `local` and `integration-test`.
         * Run `npx cypress open`. Click on `auth.spec.js` in Cypress desktop application.
+        * Add `commands.js` and `user-management.spec.js` test
