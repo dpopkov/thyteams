@@ -20,6 +20,7 @@
         <frontend-maven-plugin.npmVersion>6.14.11</frontend-maven-plugin.npmVersion>
         <jpearl.version>1.0.0</jpearl.version>
         <testcontainers.version>1.16.0</testcontainers.version>
+        <testcontainers-cypress.version>1.3.0</testcontainers-cypress.version>
         <guava.version>30.0-jre</guava.version>
         <javafaker.version>1.0.2</javafaker.version>
     </properties>
@@ -106,9 +107,22 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.wimdeblauwe</groupId>
+            <artifactId>testcontainers-cypress</artifactId>
+            <version>${testcontainers-cypress.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>${javafaker.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
@@ -129,6 +143,15 @@
                 </excludes>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/e2e</directory>
+                <targetPath>e2e</targetPath>
+            </testResource>
+        </testResources>
         <pluginManagement>
             <plugins>
                 <plugin>

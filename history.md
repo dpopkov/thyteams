@@ -259,3 +259,23 @@ mvn jpearl:generate -Dentity=User
         * Run the application with profiles `local` and `integration-test`.
         * Run `npx cypress open`. Click on `auth.spec.js` in Cypress desktop application.
         * Add `commands.js` and `user-management.spec.js` test
+    * Run Cypress tests from JUnit
+        * Add dependencies for `org.testcontainers` artifacts `junit-jupiter` and `testcontainers-cypress`
+        * Create CypressE2eTests
+            * Create e2e test template
+                * @SpringBootTest starts the complete application.
+                * The @Testcontainers annotation triggers the JUnit 5 support of Testcontainers.
+                * The @Container annotation will start and stop the Docker container via Testcontainers.
+                * Use @LocalServerPort to inject the port.
+                * Dynamically set the JDBC URL, db username and password by adding method annotated with @DynamicPropertySource.
+                * The database should be empty at startup.
+                * Run (in the src/test/e2e directory): `npm install cypress-multi-reporters mocha mochawesome --save-dev`
+                * Update cypress.json to add reporter and reporterOptions
+                * Create reporter-config.json
+                * Update .gitignore to avoid accidental commits
+                * Update the Maven pom.xml so the Cypress tests are made available as test resources
+            * Start the Cypress Docker container in our JUnit test and run the Cypress tests
+                * Ensure the `integration-test` profile is active so integration-test REST endpoint will be available.
+                * Ensure that the Cypress container can access the app running on port via http://host.testcontainers.internal 
+                * Declare a CypressContainer with a custom Docker image name.
+                * Start the container programmatically, get the results, and assert that there should be no failing tests.
