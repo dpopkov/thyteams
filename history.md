@@ -279,3 +279,7 @@ mvn jpearl:generate -Dentity=User
                 * Ensure that the Cypress container can access the app running on port via http://host.testcontainers.internal 
                 * Declare a CypressContainer with a custom Docker image name.
                 * Start the container programmatically, get the results, and assert that there should be no failing tests.
+            * Use the JUnit 5 support for dynamic tests
+                * Replace @Test with @TestFactory to indicate that this method will return a collection of tests.
+                * Change the return type from void to List<DynamicContainer>.
+                * Convert the test results from the CypressContainer to a List<DynamicContainer>

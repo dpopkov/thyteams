@@ -1,10 +1,11 @@
 package learn.thyme.thyteams;
 
 import io.github.wimdeblauwe.testcontainers.cypress.CypressContainer;
+import io.github.wimdeblauwe.testcontainers.cypress.CypressTest;
 import io.github.wimdeblauwe.testcontainers.cypress.CypressTestResults;
+import io.github.wimdeblauwe.testcontainers.cypress.CypressTestSuite;
 import learn.thyme.thyteams.user.UserService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -16,9 +17,12 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
@@ -48,11 +52,8 @@ public class CypressE2eTests {
         assertThat(userService.countUsers()).isZero();
     }
 
-    @Test
-    void runTests() throws InterruptedException, IOException, TimeoutException {
-        /*System.out.println("port = " + port);
-        System.out.println("Application started");*/
-
+    @TestFactory
+    List<DynamicContainer> runTests() throws InterruptedException, IOException, TimeoutException {
         /*
         Ensure that the Cypress container can access the app running on port 'port' via 'host.testcontainers.internal'.
         This is a special hostname that allows a Testcontainers container to access the host
@@ -71,6 +72,25 @@ public class CypressE2eTests {
             assertThat(testResults.getNumberOfFailingTests())
                     .describedAs("%s", testResults)
                     .isZero();
+            return convertToJUnitDynamicTests(testResults);
         }
+    }
+
+    private List<DynamicContainer> convertToJUnitDynamicTests(CypressTestResults testResults) {
+        List<DynamicContainer> dynamicContainers = new ArrayList<>();
+        List<CypressTestSuite> suites = testResults.getSuites();
+        for (CypressTestSuite suite : suites) {
+            createContainerFromSuite(dynamicContainers, suite);
+        }
+        return dynamicContainers;
+    }
+
+    private void createContainerFromSuite(List<DynamicContainer> dynamicContainers,
+                                          CypressTestSuite suite) {
+        List<DynamicTest> dynamicTests = new ArrayList<>();
+        for (CypressTest test : suite.getTests()) {
+            dynamicTests.add(DynamicTest.dynamicTest(test.getDescription(), () -> assertTrue(test.isSuccess())));
+        }
+        dynamicContainers.add(DynamicContainer.dynamicContainer(suite.getTitle(), dynamicTests));
     }
 }
