@@ -14,6 +14,7 @@ History and short Reference
 * [Ch13 - Deletion of an entity](#ch13---deletion-of-an-entity)
 * [Ch14 - Security](#ch14---security)
 * [Ch15 - Testing](#ch15---testing)
+* [Ch16 - Various Tips](#ch16---various-tips)
 
 ### Ch03 - Thymeleaf intro
 * First controller and view
@@ -283,3 +284,11 @@ mvn jpearl:generate -Dentity=User
                 * Replace @Test with @TestFactory to indicate that this method will return a collection of tests.
                 * Change the return type from void to List<DynamicContainer>.
                 * Convert the test results from the CypressContainer to a List<DynamicContainer>
+
+### Ch16 - Various Tips
+* Set Open Session in View false: `spring.jpa.open-in-view=false`.
+* Use StringTrimmerEditor to remove excess whitespaces when the values are taken from the \<input\> fields.
+* Add methods annotated with @ModelAttribute to use controller specific model attributes. 
+* Use @ControllerAdvice to have model attributes across the whole application.
+    * Update `resources` section in pom.
+    * Use version in Thymeleaf templates (e.g. login.html)

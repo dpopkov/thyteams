@@ -23,6 +23,16 @@ public class UserController {
         this.service = service;
     }
 
+    @ModelAttribute("genders")
+    public List<Gender> genders() {
+        return List.of(Gender.MALE, Gender.FEMALE, Gender.OTHER);
+    }
+
+    @ModelAttribute("possibleRoles")
+    public List<UserRole> possibleRoles() {
+        return List.of(UserRole.values());
+    }
+
     @GetMapping
     public String index(Model model,
                         @SortDefault.SortDefaults({
@@ -36,8 +46,6 @@ public class UserController {
     @Secured("ROLE_ADMIN")
     public String createUserForm(Model model) {
         model.addAttribute("user", new CreateUserFormData());
-        addGendersTo(model);
-        addUserRolesTo(model);
         model.addAttribute("editMode", EditMode.CREATE);
         return "users/edit";
     }
@@ -48,8 +56,6 @@ public class UserController {
                                    @ModelAttribute("user") CreateUserFormData formData,
                                BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            addGendersTo(model);
-            addUserRolesTo(model);
             model.addAttribute("editMode", EditMode.CREATE);
             return "users/edit";
         }
@@ -62,8 +68,6 @@ public class UserController {
         User user = service.getUser(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
         model.addAttribute("user", EditUserFormData.fromUser(user));
-        addGendersTo(model);
-        addUserRolesTo(model);
         model.addAttribute("editMode", EditMode.UPDATE);
         return "users/edit";
     }
@@ -76,21 +80,11 @@ public class UserController {
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            addGendersTo(model);
-            addUserRolesTo(model);
             model.addAttribute("editMode", EditMode.UPDATE);
             return "users/edit";
         }
         service.editUser(userId, formData.toParameters());
         return "redirect:/users";
-    }
-
-    private void addGendersTo(Model model) {
-        model.addAttribute("genders", List.of(Gender.MALE, Gender.FEMALE, Gender.OTHER));
-    }
-
-    private void addUserRolesTo(Model model) {
-        model.addAttribute("possibleRoles", List.of(UserRole.values()));
     }
 
     @PostMapping("/{id}/delete")
