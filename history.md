@@ -292,3 +292,8 @@ mvn jpearl:generate -Dentity=User
 * Use @ControllerAdvice to have model attributes across the whole application.
     * Update `resources` section in pom.
     * Use version in Thymeleaf templates (e.g. login.html)
+* File upload
+    * Use MultipartFile field
+    * Update User entity and Flyway sql script.
+    * Update UserServiceImpl, parameter and form classes.
+    * Update edit.html to allow the user to select a file.

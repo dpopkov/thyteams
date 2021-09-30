@@ -7,7 +7,9 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
                 parameters.getBirthday(),
                 parameters.getEmail(),
                 parameters.getPhoneNumber());
+        storeAvatarIfPresent(parameters, user);
         return repository.save(user);
     }
 
@@ -49,7 +52,19 @@ public class UserServiceImpl implements UserService {
                 parameters.getBirthday(),
                 parameters.getEmail(),
                 parameters.getPhoneNumber());
+        storeAvatarIfPresent(parameters, user);
         return repository.save(user);
+    }
+
+    private void storeAvatarIfPresent(CreateUserParameters parameters, User user) {
+        MultipartFile avatar = parameters.getAvatar();
+        if (avatar != null) {
+            try {
+                user.setAvatar(avatar.getBytes());
+            } catch (IOException e) {
+                throw new UserServiceException(e);
+            }
+        }
     }
 
     @Override

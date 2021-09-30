@@ -10,6 +10,7 @@ CREATE TABLE tt_user
     birthday DATE NOT NULL,
     email VARCHAR NOT NULL,
     phone_number VARCHAR NOT NULL,
+    avatar BYTEA,
     PRIMARY KEY (id)
 );
 

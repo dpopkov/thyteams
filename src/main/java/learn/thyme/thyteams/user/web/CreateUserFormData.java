@@ -2,6 +2,7 @@ package learn.thyme.thyteams.user.web;
 
 import learn.thyme.thyteams.infrastructure.validation.ValidationGroupTwo;
 import learn.thyme.thyteams.user.CreateUserParameters;
+import learn.thyme.thyteams.user.Email;
 import learn.thyme.thyteams.user.PhoneNumber;
 import learn.thyme.thyteams.user.UserName;
 
@@ -32,11 +33,15 @@ public class CreateUserFormData extends AbstractUserFormData {
     }
 
     public CreateUserParameters toParameters() {
-        return new CreateUserParameters(new UserName(getFirstName(), getLastName()),
+        final CreateUserParameters parameters = new CreateUserParameters(new UserName(getFirstName(), getLastName()),
                 password,
                 getGender(),
                 getBirthday(),
-                new learn.thyme.thyteams.user.Email(getEmail()),
+                new Email(getEmail()),
                 new PhoneNumber(getPhoneNumber()));
+        if (getAvatarFile() != null && !getAvatarFile().isEmpty()) {
+            parameters.setAvatar(getAvatarFile());
+        }
+        return parameters;
     }
 }

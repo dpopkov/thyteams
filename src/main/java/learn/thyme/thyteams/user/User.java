@@ -30,6 +30,8 @@ public class User extends AbstractVersionedEntity<UserId> {
     @NotNull
     private PhoneNumber phoneNumber;
 
+    private byte[] avatar;
+
     /**
      * Default constructor for JPA (application code should never use that constructor directly)
      */
@@ -104,6 +106,10 @@ public class User extends AbstractVersionedEntity<UserId> {
         return phoneNumber;
     }
 
+    public byte[] getAvatar() {
+        return avatar;
+    }
+
     public void setUserName(UserName userName) {
         this.userName = userName;
     }
@@ -122,5 +128,9 @@ public class User extends AbstractVersionedEntity<UserId> {
 
     public void setPhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 }

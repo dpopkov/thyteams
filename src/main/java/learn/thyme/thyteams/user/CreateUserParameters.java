@@ -1,5 +1,8 @@
 package learn.thyme.thyteams.user;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 
 public class CreateUserParameters {
@@ -10,6 +13,7 @@ public class CreateUserParameters {
     private final LocalDate birthday;
     private final Email email;
     private final PhoneNumber phoneNumber;
+    private MultipartFile avatar;
 
     public CreateUserParameters(UserName userName, String password, Gender gender, LocalDate birthday,
                                 Email email, PhoneNumber phoneNumber) {
@@ -43,5 +47,14 @@ public class CreateUserParameters {
 
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Nullable
+    public MultipartFile getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(MultipartFile avatarFile) {
+        this.avatar = avatarFile;
     }
 }

@@ -5,6 +5,7 @@ import learn.thyme.thyteams.infrastructure.validation.ValidationGroupTwo;
 import learn.thyme.thyteams.user.Gender;
 import learn.thyme.thyteams.user.UserRole;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -30,6 +31,16 @@ public class AbstractUserFormData {
     @NotBlank
     @Pattern(regexp = "[0-9.\\-() x/+]+", groups = ValidationGroupOne.class)
     private String phoneNumber;
+
+    private MultipartFile avatarFile;
+
+    public MultipartFile getAvatarFile() {
+        return avatarFile;
+    }
+
+    public void setAvatarFile(MultipartFile avatarFile) {
+        this.avatarFile = avatarFile;
+    }
 
     public UserRole getUserRole() {
         return userRole;
