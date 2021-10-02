@@ -1,5 +1,6 @@
 package learn.thyme.thyteams.user;
 
+import com.google.common.collect.ImmutableSortedSet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Service
@@ -109,5 +113,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public long countUsers() {
         return repository.count();
+    }
+
+    @Override
+    public ImmutableSortedSet<UserNameAndId> getAllUsersNameAndId() {
+        Iterable<User> users = repository.findAll();
+        return ImmutableSortedSet.copyOf(
+                Comparator.comparing(userNameAndId -> userNameAndId.getUserName().getFullName()),
+                StreamSupport.stream(users.spliterator(), false)
+                        .map(user -> new UserNameAndId(user.getId(), user.getUserName()))
+                        .sorted(Comparator.comparing(userNameAndId -> userNameAndId.getUserName().getFullName()))
+                        .collect(Collectors.toList()));
     }
 }

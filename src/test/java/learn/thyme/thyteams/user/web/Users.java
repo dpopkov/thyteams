@@ -7,6 +7,10 @@ import java.util.UUID;
 
 public class Users {
 
+    public static User createUser(UserName userName) {
+        return createUser(userName, "1999-12-31");
+    }
+
     public static User createUser(UserName userName, String birthDay) {
         return User.createUser(new UserId(UUID.randomUUID()),
                 userName,

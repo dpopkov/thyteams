@@ -297,3 +297,11 @@ mvn jpearl:generate -Dentity=User
     * Update User entity and Flyway sql script.
     * Update UserServiceImpl, parameter and form classes.
     * Update edit.html to allow the user to select a file.
+* Selecting a linked entity value
+    * Create Team entity using JPearl: `mvn jpearl:generate -Dentity=Team`
+    * Add fields to Team.
+    * Create `V1.1__add-team.sql` migration sql script.
+    * Create TeamService.
+    * Create CreateTeamFormData, EditTeamFormData, edit.html view template.
+    * Update TeamController, UserService, list.html view template.
+    * Update DatabaseInitializer to populate teams.
