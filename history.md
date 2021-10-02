@@ -302,6 +302,10 @@ mvn jpearl:generate -Dentity=User
     * Add fields to Team.
     * Create `V1.1__add-team.sql` migration sql script.
     * Create TeamService.
-    * Create CreateTeamFormData, EditTeamFormData, edit.html view template.
+    * Create CreateTeamFormData, EditTeamFormData, StringToTeamIdConverter, edit.html view template.
     * Update TeamController, UserService, list.html view template.
     * Update DatabaseInitializer to populate teams.
+    * Add e2e tests for Team operations:
+        * add `team-management.spec.js`
+        * add a new endpoint to IntegrationTestController so there is a team present
+        * make a 'hack' - add id `success-alert-message` for `success' fragment - need to FIX it!

@@ -1,5 +1,6 @@
 package learn.thyme.thyteams.infrastructure.test;
 
+import learn.thyme.thyteams.team.TeamService;
 import learn.thyme.thyteams.user.*;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,16 +15,25 @@ import java.time.LocalDate;
 public class IntegrationTestController {
 
     private final UserService userService;
+    private final TeamService teamService;
 
-    public IntegrationTestController(UserService userService) {
+    public IntegrationTestController(UserService userService, TeamService teamService) {
         this.userService = userService;
+        this.teamService = teamService;
     }
 
     @PostMapping("/reset-db")
     public void resetDatabase() {
+        teamService.deleteAllTeams();
         userService.deleteAllUsers();
         addUser();
         addAdministrator();
+    }
+
+    @PostMapping("/add-test-team")
+    public void addTestTeam() {
+        UserNameAndId userNameAndId = userService.getAllUsersNameAndId().first();
+        teamService.createTeam("Test Team", userNameAndId.getId());
     }
 
     private void addUser() {
