@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -33,15 +35,18 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team createTeam(String name, User coach) {
+    public Team createTeam(CreateTeamParameters parameters) {
+        final String name = parameters.getName();
+        final User coach = getUser(parameters.getCoachId());
         log.info("Creating team {} with coach {} ({})", name, coach.getUserName().getFullName(), coach.getId());
-        return repository.save(new Team(repository.nextId(), name, coach));
-    }
-
-    @Override
-    public Team createTeam(String name, UserId coachId) {
-        User coach = getCoach(coachId);
-        return createTeam(name, coach);
+        Team team = new Team(repository.nextId(), name, coach);
+        final Set<TeamPlayerParameters> players = parameters.getPlayers();
+        for (TeamPlayerParameters tpParams : players) {
+            TeamPlayerId tpId = repository.nextPlayerId();
+            User player = getUser(tpParams.getPlayerId());
+            team.addPlayer(new TeamPlayer(tpId, player, tpParams.getPosition()));
+        }
+        return repository.save(team);
     }
 
     @Override
@@ -50,14 +55,25 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team editTeam(TeamId teamId, long version, String name, UserId coachId) {
+    public Optional<Team> getTeamWithPlayers(TeamId teamId) {
+        return repository.findTeamWithPlayers(teamId);
+    }
+
+    @Override
+    public Team editTeam(TeamId teamId, EditTeamParameters parameters) {
         Team team = getTeam(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
-        if (team.getVersion() != version) {
+        if (team.getVersion() != parameters.getVersion()) {
             throw new ObjectOptimisticLockingFailureException(Team.class, team.getId().asString());
         }
-        team.setName(name);
-        team.setCoach(getCoach(coachId)); // Saving the updated team is done automatically by JPA/Hibernate.
+        team.setName(parameters.getName());
+        team.setCoach(getUser(parameters.getCoachId())); // Saving the updated team is done automatically by JPA/Hibernate.
+        team.setPlayers(parameters.getPlayers().stream()
+                .map(tpParams -> new TeamPlayer(
+                        repository.nextPlayerId(),
+                        getUser(tpParams.getPlayerId()),
+                        tpParams.getPosition())
+                ).collect(Collectors.toSet()));
         return team;
     }
 
@@ -71,8 +87,21 @@ public class TeamServiceImpl implements TeamService {
         repository.deleteAll();
     }
 
-    private User getCoach(UserId coachId) {
-        return userService.getUser(coachId)
-                .orElseThrow(() -> new UserNotFoundException(coachId));
+    @Override
+    public Team addPlayer(TeamId teamId, long version, UserId userId, PlayerPosition position) {
+        Team team = getTeam(teamId)
+                .orElseThrow(() -> new TeamNotFoundException(teamId));
+        if (team.getVersion() != version) {
+            throw new ObjectOptimisticLockingFailureException(User.class, team.getId().asString());
+        }
+        team.addPlayer(new TeamPlayer(repository.nextPlayerId(),
+                        getUser(userId),
+                        position));
+        return team;
+    }
+
+    private User getUser(UserId userId) {
+        return userService.getUser(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 }

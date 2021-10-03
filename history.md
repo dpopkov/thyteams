@@ -309,3 +309,15 @@ mvn jpearl:generate -Dentity=User
         * add `team-management.spec.js`
         * add a new endpoint to IntegrationTestController so there is a team present
         * make a 'hack' - add id `success-alert-message` for `success' fragment - need to FIX it!
+* Dynamically adding rows
+    * Add TeamPlayer entity, update Team for TeamPlayer-s.
+    * Update TeamRepositoryCustom for TeamPlayerId.
+    * Update Flyway sql script, TeamRepositoryTest.
+    * Add TeamPlayerFormData, update CreateTeamFormData
+    * Create teamplayer-form fragment, update edit.html for Players
+    * Update TeamController for positions
+    * Update DatabaseInitializer for players, update EditTeamFormData for players
+    * Update TeamService for addPlayer and getTeamWithPlayers methods.
+    * Update TeamRepository for findTeamWithPlayers method
+    * Add TeamPlayerParameters, CreateTeamParameters, EditTeamParameters.
+    * Update TeamService to use parameter classes and persist players.

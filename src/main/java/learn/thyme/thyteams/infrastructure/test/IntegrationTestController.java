@@ -1,5 +1,9 @@
 package learn.thyme.thyteams.infrastructure.test;
 
+import com.google.common.collect.ImmutableSortedSet;
+import learn.thyme.thyteams.team.CreateTeamParameters;
+import learn.thyme.thyteams.team.PlayerPosition;
+import learn.thyme.thyteams.team.TeamPlayerParameters;
 import learn.thyme.thyteams.team.TeamService;
 import learn.thyme.thyteams.user.*;
 import org.springframework.context.annotation.Profile;
@@ -8,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/integration-test")
@@ -32,8 +37,13 @@ public class IntegrationTestController {
 
     @PostMapping("/add-test-team")
     public void addTestTeam() {
-        UserNameAndId userNameAndId = userService.getAllUsersNameAndId().first();
-        teamService.createTeam("Test Team", userNameAndId.getId());
+        final ImmutableSortedSet<UserNameAndId> users = userService.getAllUsersNameAndId();
+        UserNameAndId userNameAndId = users.first();
+        CreateTeamParameters parameters = new CreateTeamParameters("Test Team",
+                                            userNameAndId.getId(),
+                                            Set.of(new TeamPlayerParameters(users.last().getId(),
+                                                    PlayerPosition.POINT_GUARD)));
+        teamService.createTeam(parameters);
     }
 
     private void addUser() {

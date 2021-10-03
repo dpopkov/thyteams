@@ -2,6 +2,8 @@ package learn.thyme.thyteams;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
+import com.google.common.collect.Streams;
+import learn.thyme.thyteams.team.*;
 import learn.thyme.thyteams.user.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.CommandLineRunner;
@@ -11,22 +13,37 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Nonnull;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 @Component
 @Profile("init-db")
 public class DatabaseInitializer implements CommandLineRunner {
+    private static final String[] TEAM_NAMES = new String[]{
+            "Initiates",
+            "Knights",
+            "Padawans",
+            "Rookies",
+            "Wizards"
+    };
+
     private final Faker faker = new Faker();
     private final UserService userService;
+    private final TeamService teamService;
 
-    public DatabaseInitializer(UserService userService) {
+    public DatabaseInitializer(UserService userService, TeamService teamService) {
         this.userService = userService;
+        this.teamService = teamService;
     }
 
     @Override
     public void run(String... args) {
+        Set<User> generatedUsers = new HashSet<>();
         for (int i = 0; i < 20; i++) {
             CreateUserParameters parameters = newRandomUserParameters();
-            userService.createUser(parameters);
+            generatedUsers.add(userService.createUser(parameters));
         }
         UserName userName = randomUserName();
         CreateUserParameters parameters = new CreateUserParameters(
@@ -37,6 +54,32 @@ public class DatabaseInitializer implements CommandLineRunner {
                 generateEmailForUserName(userName),
                 randomPhoneNumber());
         userService.createAdministrator(parameters);
+
+        Streams.forEachPair(generatedUsers.stream().limit(TEAM_NAMES.length),
+            Arrays.stream(TEAM_NAMES),
+            (user, teamName) -> {
+                System.out.println(user);
+                Set<TeamPlayerParameters> players = Set.of(
+                        new TeamPlayerParameters(randomUser(generatedUsers),
+                                PlayerPosition.SMALL_FORWARD),
+                        new TeamPlayerParameters(randomUser(generatedUsers),
+                                PlayerPosition.SHOOTING_GUARD),
+                        new TeamPlayerParameters(randomUser(generatedUsers),
+                                PlayerPosition.CENTER)
+                );
+                CreateTeamParameters params = new CreateTeamParameters(teamName, user.getId(), players);
+                teamService.createTeam(params);
+            }
+        );
+    }
+
+    private UserId randomUser(Set<User> users) {
+        int index = faker.random().nextInt(users.size());
+        Iterator<User> iter = users.iterator();
+        for (int i = 0; i < index; i++) {
+            iter.next();
+        }
+        return iter.next().getId();
     }
 
     private CreateUserParameters newRandomUserParameters() {

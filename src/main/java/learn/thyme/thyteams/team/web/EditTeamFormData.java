@@ -1,5 +1,6 @@
 package learn.thyme.thyteams.team.web;
 
+import learn.thyme.thyteams.team.EditTeamParameters;
 import learn.thyme.thyteams.team.Team;
 
 public class EditTeamFormData extends CreateTeamFormData {
@@ -12,6 +13,9 @@ public class EditTeamFormData extends CreateTeamFormData {
         formData.setVersion(team.getVersion());
         formData.setName(team.getName());
         formData.setCoachId(team.getCoach().getId());
+        formData.setPlayers(team.getPlayers().stream()
+                            .map(TeamPlayerFormData::from)
+                            .toArray(TeamPlayerFormData[]::new));
         return formData;
     }
 
@@ -29,5 +33,13 @@ public class EditTeamFormData extends CreateTeamFormData {
 
     public void setVersion(long version) {
         this.version = version;
+    }
+
+    @Override
+    public EditTeamParameters toParameters() {
+        return new EditTeamParameters(version,
+                getName(),
+                getCoachId(),
+                getTeamPlayerParameters());
     }
 }

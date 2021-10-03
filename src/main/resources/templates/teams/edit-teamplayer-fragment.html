@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<div th:fragment="teamplayer-form"
+     class="col-span-6 flex items-stretch"
+     th:id="${'teamplayer-form-section-' + __${index}__}"> <!-- index parameter should be passed to the template -->
+    <div class="grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
+        <div class="sm:col-span-2">
+            <div class="mt-1 rounded-md shadow-sm">
+                <select class="max-w-lg block focus:ring-green-500 focus:border-green-
+500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
+                        th:field="*{players[__${index}__].playerId}"> <!-- Bind the <select> to the playerId property of the current player -->
+                    <option th:each="user : ${users}"
+                            th:text="${user.userName.fullName}"
+                            th:value="${user.id.asString()}">
+                </select>
+            </div>
+        </div>
+        <div class="sm:col-span-2">
+            <div class="mt-1 rounded-md shadow-sm">
+                <select class="max-w-lg block focus:ring-green-500 focus:border-green-
+500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
+                        th:field="*{players[__${index}__].position}"> <!-- Bind the <select> to the position property of the current player -->
+                    <option th:each="position : ${positions}"
+                            th:text="#{'PlayerPosition.' + ${position}}"
+                            th:value="${position}">
+                </select>
+            </div>
+        </div>
+
+        <!-- Add a remove button to remove the player from the team. -->
+        <div class="ml-1 sm:col-span-2 flex items-center text-green-600 hover:text-
+green-900">
+            <div class="h-6 w-6">
+                <svg th:replace="trash"></svg>
+            </div>
+            <a href="#"
+               class="ml-1"
+               th:text="#{team.player.remove}"> 4
+            </a>
+        </div>
+    </div>
+</div>
+</html>

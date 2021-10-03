@@ -79,6 +79,32 @@ class TeamRepositoryTest {
                         coach.getUserName()));
     }
 
+    @Test
+    void testSaveTeamWithPlayers() {
+        User coach = userRepository.save(Users.createUser(new UserName("Coach", "1")));
+        User player1 = userRepository.save(Users.createUser(new UserName("Player", "1")));
+        User player2 = userRepository.save(Users.createUser(new UserName("Player", "2")));
+        User player3 = userRepository.save(Users.createUser(new UserName("Player", "3")));
+
+        TeamId id = repository.nextId();
+        Team team = new Team(id, "Initiates", coach);
+        team.addPlayer(new TeamPlayer(repository.nextPlayerId(), player1, PlayerPosition.POINT_GUARD));
+        team.addPlayer(new TeamPlayer(repository.nextPlayerId(), player2, PlayerPosition.SHOOTING_GUARD));
+        team.addPlayer(new TeamPlayer(repository.nextPlayerId(), player3, PlayerPosition.CENTER));
+
+        repository.save(team);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThat(repository.findById(id))
+                .hasValueSatisfying(team1 -> {
+                    assertThat(team1.getId()).isEqualTo(id);
+                    assertThat(team1.getCoach().getId()).isEqualTo(coach.getId());
+                    assertThat(team1.getPlayers()).hasSize(3);
+                });
+    }
+
     @TestConfiguration
     static class TestConfig {
         @Bean

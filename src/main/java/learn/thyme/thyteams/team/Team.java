@@ -3,10 +3,10 @@ package learn.thyme.thyteams.team;
 import io.github.wimdeblauwe.jpearl.AbstractVersionedEntity;
 import learn.thyme.thyteams.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Team extends AbstractVersionedEntity<TeamId> {
@@ -17,6 +17,9 @@ public class Team extends AbstractVersionedEntity<TeamId> {
     @ManyToOne(fetch = FetchType.LAZY)
     private User coach;
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TeamPlayer> players;
+
     protected Team() {
     }
 
@@ -24,6 +27,7 @@ public class Team extends AbstractVersionedEntity<TeamId> {
         super(id);
         this.name = name;
         this.coach = coach;
+        players = new HashSet<>();
     }
 
     public String getName() {
@@ -40,5 +44,21 @@ public class Team extends AbstractVersionedEntity<TeamId> {
 
     public void setCoach(User coach) {
         this.coach = coach;
+    }
+
+    public Set<TeamPlayer> getPlayers() {
+        return players;
+    }
+
+    public void addPlayer(TeamPlayer player) {
+        players.add(player);
+        player.setTeam(this);
+    }
+
+    public void setPlayers(Set<TeamPlayer> players) {
+        this.players.clear();
+        for (TeamPlayer player : players) {
+            addPlayer(player);
+        }
     }
 }

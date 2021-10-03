@@ -1,10 +1,7 @@
 package learn.thyme.thyteams.team.web;
 
 import learn.thyme.thyteams.infrastructure.web.EditMode;
-import learn.thyme.thyteams.team.Team;
-import learn.thyme.thyteams.team.TeamId;
-import learn.thyme.thyteams.team.TeamNotFoundException;
-import learn.thyme.thyteams.team.TeamService;
+import learn.thyme.thyteams.team.*;
 import learn.thyme.thyteams.user.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
@@ -41,6 +38,7 @@ public class TeamController {
     public String createTeamForm(Model model) {
         model.addAttribute("team", new CreateTeamFormData());
         model.addAttribute("users", userService.getAllUsersNameAndId());
+        model.addAttribute("positions", PlayerPosition.values());
         return "teams/edit";
     }
 
@@ -51,19 +49,21 @@ public class TeamController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("editMode", EditMode.CREATE);
             model.addAttribute("users", userService.getAllUsersNameAndId());
+            model.addAttribute("positions", PlayerPosition.values());
             return "teams/edit";
         }
-        service.createTeam(formData.getName(), formData.getCoachId());
+        service.createTeam(formData.toParameters());
         return "redirect:/teams";
     }
 
     @GetMapping("/{id}")
     public String editTeamForm(@PathVariable("id") TeamId teamId,
                                Model model) {
-        Team team = service.getTeam(teamId)
+        Team team = service.getTeamWithPlayers(teamId)
                 .orElseThrow(() -> new TeamNotFoundException(teamId));
         model.addAttribute("team", EditTeamFormData.from(team));
         model.addAttribute("users", userService.getAllUsersNameAndId());
+        model.addAttribute("positions", PlayerPosition.values());
         model.addAttribute("editMode", EditMode.UPDATE);
         return "teams/edit";
     }
@@ -77,9 +77,10 @@ public class TeamController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("editMode", EditMode.UPDATE);
             model.addAttribute("users", userService.getAllUsersNameAndId());
+            model.addAttribute("positions", PlayerPosition.values());
             return "teams/edit";
         }
-        service.editTeam(teamId, formData.getVersion(), formData.getName(), formData.getCoachId());
+        service.editTeam(teamId, formData.toParameters());
         return "redirect:/teams";
     }
 
