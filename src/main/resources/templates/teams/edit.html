@@ -113,6 +113,11 @@
             template.innerHTML = html;
             return template.content.firstChild;
         }
+
+        function removeTeamPlayerForm(formIndex) {
+            const teamplayerForm = document.getElementById('teamplayer-form-section-' + formIndex);
+            teamplayerForm.parentElement.removeChild(teamplayerForm);
+        }
     </script>
 </th:block>
 

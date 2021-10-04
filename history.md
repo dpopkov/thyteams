@@ -324,3 +324,8 @@ mvn jpearl:generate -Dentity=User
     * Add rows:
         * Update edit and edit-teamplayer-fragment.
         * Add a method to TeamController that returns the fragment.
+    * Delete rows:
+        * Update the edit-teamplayer-fragment.
+        * Add removeTeamPlayerForm js function.
+        * Add RemoveUnusedTeamPlayersValidator to TeamController.
+        * Update CreateTeamFormData.
