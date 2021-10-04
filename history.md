@@ -333,3 +333,6 @@ mvn jpearl:generate -Dentity=User
     * Add PhoneNumberFormatter and configure it in WebMvcConfiguration
     * Update AbstractUserFormData
     * Move validation logic to PhoneNumber
+* Date picker (Duet Date Picker)
+    * Add JavaScript and CSS to layout.html
+    * Create dateinput component in the forms.html fragments

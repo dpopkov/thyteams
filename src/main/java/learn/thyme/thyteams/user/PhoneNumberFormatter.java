@@ -2,7 +2,6 @@ package learn.thyme.thyteams.user;
 
 import org.springframework.format.Formatter;
 import javax.annotation.Nonnull;
-import java.text.ParseException;
 import java.util.Locale;
 
 public class PhoneNumberFormatter implements Formatter<PhoneNumber> {

@@ -89,8 +89,7 @@
                             </th:block>
                             <div th:replace="fragments/forms :: textinput(#{user.phoneNumber}, 'phoneNumber', 'sm:col-span-4')"></div>
                             <div class="sm:col-span-2"></div>
-                            <div th:replace="fragments/forms :: textinput(labelText=#{user.birthday}, fieldName='birthday', cssClass='sm:col-span-2', placeholder=#{user.birthday.placeholder})"></div>
-
+                            <div th:replace="fragments/forms :: dateinput(labelText=#{user.birthday}, fieldName='birthday', cssClass='sm:col-span-2')"></div>
                         </div>
                     </div>
                     <div class="mt-8 border-t border-gray-200 pt-5">
