@@ -7,7 +7,7 @@ import java.util.Base64;
 public class EditUserFormData  extends AbstractUserFormData {
     private String id;  // references user id
     private long version;
-    private String avatarBase64Encoded;;
+    private String avatarBase64Encoded;
 
     public static EditUserFormData fromUser(User user) {
         EditUserFormData result = new EditUserFormData();
@@ -18,7 +18,7 @@ public class EditUserFormData  extends AbstractUserFormData {
         result.setGender(user.getGender());
         result.setBirthday(user.getBirthday());
         result.setEmail(user.getEmail().asString());
-        result.setPhoneNumber(user.getPhoneNumber().asString());
+        result.setPhoneNumber(user.getPhoneNumber());
         if (user.getAvatar() != null) {
             String encoded = Base64.getEncoder().encodeToString(user.getAvatar());
             result.setAvatarBase64Encoded(encoded);
@@ -32,7 +32,7 @@ public class EditUserFormData  extends AbstractUserFormData {
                 getGender(),
                 getBirthday(),
                 new Email(getEmail()),
-                new PhoneNumber(getPhoneNumber()));
+                getPhoneNumber());
         if (getAvatarFile() != null && !getAvatarFile().isEmpty()) {
             parameters.setAvatar(getAvatarFile());
         }

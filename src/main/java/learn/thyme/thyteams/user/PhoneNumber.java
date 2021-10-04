@@ -4,8 +4,11 @@ import com.google.common.base.MoreObjects;
 import org.springframework.util.Assert;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class PhoneNumber {
+    private static final Pattern VALIDATION_PATTERN = Pattern.compile("[0-9.\\-()x/+]+");
+
     private String phoneNumber;
 
     protected PhoneNumber() {
@@ -13,6 +16,7 @@ public class PhoneNumber {
 
     public PhoneNumber(String phoneNumber) {
         Assert.hasText(phoneNumber, "phoneNumber cannot be blank");
+        Assert.isTrue(VALIDATION_PATTERN.asPredicate().test(phoneNumber), "phoneNumber does not have proper format");
         this.phoneNumber = phoneNumber;
     }
 

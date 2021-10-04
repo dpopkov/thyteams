@@ -3,7 +3,6 @@ package learn.thyme.thyteams.user.web;
 import learn.thyme.thyteams.infrastructure.validation.ValidationGroupTwo;
 import learn.thyme.thyteams.user.CreateUserParameters;
 import learn.thyme.thyteams.user.Email;
-import learn.thyme.thyteams.user.PhoneNumber;
 import learn.thyme.thyteams.user.UserName;
 
 import javax.validation.constraints.*;
@@ -38,7 +37,7 @@ public class CreateUserFormData extends AbstractUserFormData {
                 getGender(),
                 getBirthday(),
                 new Email(getEmail()),
-                new PhoneNumber(getPhoneNumber()));
+                getPhoneNumber());
         if (getAvatarFile() != null && !getAvatarFile().isEmpty()) {
             parameters.setAvatar(getAvatarFile());
         }

@@ -3,6 +3,7 @@ package learn.thyme.thyteams.user.web;
 import learn.thyme.thyteams.infrastructure.validation.ValidationGroupOne;
 import learn.thyme.thyteams.infrastructure.validation.ValidationGroupTwo;
 import learn.thyme.thyteams.user.Gender;
+import learn.thyme.thyteams.user.PhoneNumber;
 import learn.thyme.thyteams.user.UserRole;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,9 +29,8 @@ public class AbstractUserFormData {
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
-    @NotBlank
-    @Pattern(regexp = "[0-9.\\-() x/+]+", groups = ValidationGroupOne.class)
-    private String phoneNumber;
+    @NotNull
+    private PhoneNumber phoneNumber;
 
     private MultipartFile avatarFile;
 
@@ -90,11 +90,11 @@ public class AbstractUserFormData {
         this.birthday = birthday;
     }
 
-    public String getPhoneNumber() {
+    public PhoneNumber getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 }

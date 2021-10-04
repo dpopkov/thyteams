@@ -329,3 +329,7 @@ mvn jpearl:generate -Dentity=User
         * Add removeTeamPlayerForm js function.
         * Add RemoveUnusedTeamPlayersValidator to TeamController.
         * Update CreateTeamFormData.
+* Custom property formatters
+    * Add PhoneNumberFormatter and configure it in WebMvcConfiguration
+    * Update AbstractUserFormData
+    * Move validation logic to PhoneNumber
