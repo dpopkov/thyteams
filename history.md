@@ -321,3 +321,6 @@ mvn jpearl:generate -Dentity=User
     * Update TeamRepository for findTeamWithPlayers method
     * Add TeamPlayerParameters, CreateTeamParameters, EditTeamParameters.
     * Update TeamService to use parameter classes and persist players.
+    * Add rows:
+        * Update edit and edit-teamplayer-fragment.
+        * Add a method to TeamController that returns the fragment.

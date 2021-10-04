@@ -49,9 +49,12 @@
 
                             <h3>Players</h3>
                             <div class="col-span-6 ml-4">
-                                <div id="teamplayer-forms"> <!-- contains all forms that edit the players on the team -->
+                                <!-- contains all forms that edit the players on the team -->
+                                <div id="teamplayer-forms"
+                                     th:data-teamplayers-count="${team.players.length}"> <!-- attribute data-teamplayers-count hels the JavaScript code to know what index to use next. -->
                                     <th:block th:each="player, iter : ${team.players}"> <!-- iterate over all existing players -->
-                                        <div th:replace="teams/edit-teamplayer-fragment :: teamplayer-form(index=${iter.index})"></div> <!-- use the fragment to edit a single player -->
+                                        <!-- use the fragment to edit a single player -->
+                                        <div th:replace="teams/edit-teamplayer-fragment :: teamplayer-form(index=${iter.index}, teamObjectName='team')"></div> <!-- Use the teamObjectName parameter. -->
                                     </th:block>
                                 </div>
                                 <div class="mt-4">
@@ -59,7 +62,8 @@
                                        class="py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800"
                                        id="add-extra-teamplayer-form-button"
                                        th:text="#{team.player.add.extra}"
-                                    ></a> <!-- Button to add an extra player to the team -->
+                                       @click="addExtraTeamPlayerForm()"> <!-- Add an @click attribute to trigger the addExtraTeamPlayerForm() JavaScript method. -->
+                                    </a> <!-- Button to add an extra player to the team -->
                                 </div>
                             </div>
 

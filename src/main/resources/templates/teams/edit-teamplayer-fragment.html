@@ -3,7 +3,8 @@
       lang="en">
 <div th:fragment="teamplayer-form"
      class="col-span-6 flex items-stretch"
-     th:id="${'teamplayer-form-section-' + __${index}__}"> <!-- index parameter should be passed to the template -->
+     th:id="${'teamplayer-form-section-' + __${index}__}"
+     th:object="${__${teamObjectName}__}"> <!-- index parameter should be passed to the template -->
     <div class="grid grid-cols-1 row-gap-6 col-gap-4 sm:grid-cols-6">
         <div class="sm:col-span-2">
             <div class="mt-1 rounded-md shadow-sm">
